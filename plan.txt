@@ -1,0 +1,269 @@
+# Tawasul - Startup Ecosystem Knowledge Graph Project
+
+## Project Overview
+Build a mini knowledge graph for the startup ecosystem using GraphQL to demonstrate relationships between founders, startups, and investors.
+
+## Goals
+- Show how founders, startups, and investors are connected
+- Allow users to explore relationships with nested queries
+- Demonstrate why GraphQL > REST when dealing with highly relational data
+- Simple, clean project for learning purposes
+
+## Features
+- Query Relationships (e.g., "Show me all FinTech startups and who invested in them")
+- Filtering (Filter startups by industry: FinTech, HealthTech, EdTech)
+- Nested Data (Fetch founder → startup → investors in one query)
+
+## Tech Stack
+
+### Frontend
+- React 18 + Vite (faster than Create React App)
+- Apollo Client for GraphQL consumption
+- Tailwind CSS for styling
+- React Router for navigation
+
+### Backend
+- Node.js + Apollo Server (GraphQL)
+- SQLite database (Docker containerized)
+- GraphQL Code Generator for type safety
+
+### Docker
+- SQLite database in Docker container
+- Development environment with hot reload
+- Production-ready setup
+
+## Project Structure
+```
+Tawasul/
+├── docker/
+│   ├── docker-compose.yml
+│   └── Dockerfile.db
+├── backend/
+│   ├── src/
+│   │   ├── schema/
+│   │   ├── resolvers/
+│   │   ├── database/
+│   │   └── data/
+│   ├── package.json
+│   └── server.js
+├── frontend/
+│   ├── src/
+│   │   ├── components/
+│   │   ├── hooks/
+│   │   ├── mocks/ (temporary mock data)
+│   │   └── App.js
+│   ├── package.json
+│   └── public/
+└── README.md
+```
+
+## Data Model
+```graphql
+type Founder {
+  id: ID!
+  name: String!
+  bio: String
+  startups: [Startup!]!
+}
+
+type Startup {
+  id: ID!
+  name: String!
+  description: String
+  industry: Industry!
+  founders: [Founder!]!
+  investors: [Investor!]!
+  fundingRounds: [FundingRound!]!
+}
+
+type Investor {
+  id: ID!
+  name: String!
+  type: InvestorType!
+  startups: [Startup!]!
+}
+
+enum Industry {
+  FINTECH
+  HEALTHTECH
+  EDTECH
+  ECOMMERCE
+  AI_ML
+  CYBERSECURITY
+}
+
+enum InvestorType {
+  VC
+  ANGEL
+  CORPORATE
+  CROWDFUNDING
+}
+```
+
+## Implementation Phases
+
+### Phase 1: Frontend Foundation (Start Here!)
+**Goal**: Get a working UI with mock data for immediate testing
+
+**Steps:**
+1. Setup React App with Apollo Client
+2. Create Mock GraphQL Server (using @graphql-tools/mock)
+3. Build Basic UI Components:
+   - Startup list/grid
+   - Founder cards
+   - Investor profiles
+   - Search/filter interface
+4. Test UI Interactions with mock data
+
+### Phase 2: Backend Infrastructure
+**Goal**: Set up real GraphQL backend with Docker
+
+**Steps:**
+1. Setup Docker Environment
+   - docker-compose.yml for SQLite
+   - Database volume for persistence
+2. Create Apollo Server
+   - GraphQL schema definition
+   - Basic resolvers
+3. Setup SQLite Database
+   - Tables for founders, startups, investors
+   - Seed data for testing
+
+### Phase 3: Backend-Frontend Integration
+**Goal**: Connect real backend to frontend
+
+**Steps:**
+1. Replace Mock Data with real GraphQL queries
+2. Test All UI Features with real data
+3. Optimize Queries and error handling
+
+### Phase 4: Advanced Features
+**Goal**: Demonstrate GraphQL power
+
+**Steps:**
+1. Complex Nested Queries
+2. Advanced Filtering
+3. Real-time Updates (optional)
+4. Performance Optimization
+
+## Sample GraphQL Queries
+
+### Get all FinTech startups with their founders and investors
+```graphql
+query FinTechStartups {
+  startups(industry: FINTECH) {
+    name
+    description
+    founders {
+      name
+      bio
+    }
+    investors {
+      name
+      type
+    }
+  }
+}
+```
+
+### Find a founder and all their startup connections
+```graphql
+query FounderNetwork($founderId: ID!) {
+  founder(id: $founderId) {
+    name
+    startups {
+      name
+      investors {
+        name
+        type
+      }
+    }
+  }
+}
+```
+
+## Docker Configuration
+```yaml
+# docker-compose.yml
+version: '3.8'
+services:
+  database:
+    image: alpine:latest
+    volumes:
+      - ./data:/data
+    command: sh -c "apk add --no-cache sqlite && sqlite3 /data/startups.db"
+  
+  backend:
+    build: ./backend
+    ports:
+      - "4000:4000"
+    volumes:
+      - ./backend:/app
+    depends_on:
+      - database
+  
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+```
+
+## Mock Data Structure (for Phase 1)
+```javascript
+const mockData = {
+  founders: [
+    {
+      id: "1",
+      name: "Sarah Chen",
+      bio: "Former Google engineer, FinTech enthusiast",
+      startups: ["startup-1", "startup-2"]
+    }
+  ],
+  startups: [
+    {
+      id: "startup-1",
+      name: "PayFlow",
+      industry: "FINTECH",
+      founders: ["1"],
+      investors: ["investor-1"]
+    }
+  ],
+  investors: [
+    {
+      id: "investor-1",
+      name: "Sequoia Capital",
+      type: "VC"
+    }
+  ]
+}
+```
+
+## Why Frontend-First Approach?
+1. Immediate Visual Feedback - See your app working right away
+2. Easier Testing - Mock data lets you test UI without backend complexity
+3. Better Planning - UI helps define what GraphQL queries you actually need
+4. Faster Iteration - Change UI without restarting backend
+
+## Key GraphQL Features to Demonstrate
+- Single Request: Get founder → startups → investors in one query
+- Field Selection: Choose exactly what data you need
+- Nested Filtering: Filter by industry, investor type, etc.
+- Schema Introspection: Auto-generated documentation
+
+## Next Steps
+1. Create React app with Vite
+2. Setup Apollo Client with mock server
+3. Build basic UI components
+4. Test with mock data
+5. Move to backend setup with Docker
+6. Connect real backend to frontend
+7. Implement advanced GraphQL features
+
+## Learning Outcomes
+- Understand GraphQL vs REST for relational data
+- Experience Apollo Server and Client
+- Learn Docker basics for development
+- Build modern React applications
+- Understand database relationships and queries
