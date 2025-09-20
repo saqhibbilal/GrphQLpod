@@ -4,11 +4,25 @@ import { mockData } from './mockData'
 
 function App() {
   const [selectedIndustry, setSelectedIndustry] = useState('ALL')
+  const [searchTerm, setSearchTerm] = useState('')
 
-  // Keep it simple - just use mock data for now
-  const startups = selectedIndustry === 'ALL' 
-    ? mockData.startups 
-    : mockData.startups.filter(startup => startup.industry === selectedIndustry);
+  // Filter startups by industry and search term
+  let filteredStartups = mockData.startups;
+  
+  // Filter by industry
+  if (selectedIndustry !== 'ALL') {
+    filteredStartups = filteredStartups.filter(startup => startup.industry === selectedIndustry);
+  }
+  
+  // Filter by search term
+  if (searchTerm.trim()) {
+    filteredStartups = filteredStartups.filter(startup => 
+      startup.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      startup.description.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }
+  
+  const startups = filteredStartups;
   
   const loading_state = false;
   const error_state = null;
@@ -54,9 +68,33 @@ function App() {
           </p>
         </div>
 
-        {/* Industry Filter */}
+        {/* Search and Filter */}
         <div style={{ marginBottom: '2rem', textAlign: 'center' }}>
-          <label style={{ color: '#374151', fontWeight: '500', marginRight: '1rem' }}>Filter by Industry:</label>
+          {/* Search Input */}
+          <div style={{ marginBottom: '1rem' }}>
+            <input
+              type="text"
+              placeholder="🔍 Search startups..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              style={{
+                padding: '10px 16px',
+                border: '2px solid #e5e7eb',
+                borderRadius: '8px',
+                fontSize: '16px',
+                width: '300px',
+                maxWidth: '100%',
+                outline: 'none',
+                transition: 'border-color 0.2s',
+              }}
+              onFocus={(e) => e.target.style.borderColor = '#3b82f6'}
+              onBlur={(e) => e.target.style.borderColor = '#e5e7eb'}
+            />
+          </div>
+          
+          {/* Industry Filter */}
+          <div>
+            <label style={{ color: '#374151', fontWeight: '500', marginRight: '1rem' }}>Filter by Industry:</label>
           <select 
             value={selectedIndustry}
             onChange={(e) => setSelectedIndustry(e.target.value)}
@@ -74,7 +112,10 @@ function App() {
             <option value="EDTECH">EdTech</option>
             <option value="AI_ML">AI/ML</option>
             <option value="CYBERSECURITY">Cybersecurity</option>
+            <option value="CLEANTECH">CleanTech</option>
+            <option value="ECOMMERCE">E-commerce</option>
           </select>
+          </div>
         </div>
 
         <div style={{ 

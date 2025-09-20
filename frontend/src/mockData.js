@@ -24,6 +24,36 @@ export const mockData = {
       name: "David Kim",
       bio: "AI/ML researcher from MIT. Building the future of autonomous systems.",
       startups: ["startup-6"]
+    },
+    {
+      id: "5",
+      name: "Alex Thompson",
+      bio: "Cybersecurity expert and former NSA analyst. Specializes in cloud security solutions.",
+      startups: ["startup-7", "startup-12"]
+    },
+    {
+      id: "6",
+      name: "Maria Santos",
+      bio: "Environmental engineer turned entrepreneur. Leading the clean tech revolution.",
+      startups: ["startup-8"]
+    },
+    {
+      id: "7",
+      name: "James Wilson",
+      bio: "E-commerce veteran with 3 successful exits. Expert in marketplace platforms.",
+      startups: ["startup-9"]
+    },
+    {
+      id: "8",
+      name: "Lisa Chang",
+      bio: "Data scientist from Stanford. Building next-gen analytics platforms.",
+      startups: ["startup-10"]
+    },
+    {
+      id: "9",
+      name: "Robert Johnson",
+      bio: "Medical doctor and tech entrepreneur. Bridging healthcare and technology.",
+      startups: ["startup-11"]
     }
   ],
 
@@ -81,6 +111,60 @@ export const mockData = {
       founders: ["4"],
       investors: ["investor-8", "investor-9"],
       fundingRounds: ["round-7"]
+    },
+    {
+      id: "startup-7",
+      name: "SecureVault",
+      description: "Next-generation cybersecurity for cloud infrastructure",
+      industry: "CYBERSECURITY",
+      founders: ["5"],
+      investors: ["investor-1"],
+      fundingRounds: []
+    },
+    {
+      id: "startup-8",
+      name: "GreenEnergy",
+      description: "Smart solar panel optimization with IoT sensors",
+      industry: "CLEANTECH",
+      founders: ["6"],
+      investors: ["investor-2"],
+      fundingRounds: []
+    },
+    {
+      id: "startup-9",
+      name: "ShopSmart",
+      description: "AI-powered personalized e-commerce recommendations",
+      industry: "ECOMMERCE",
+      founders: ["7"],
+      investors: ["investor-3"],
+      fundingRounds: []
+    },
+    {
+      id: "startup-10",
+      name: "DataFlow",
+      description: "Real-time analytics platform for enterprise data",
+      industry: "AI_ML",
+      founders: ["8"],
+      investors: ["investor-4"],
+      fundingRounds: []
+    },
+    {
+      id: "startup-11",
+      name: "MediConnect",
+      description: "Telemedicine platform connecting patients with specialists",
+      industry: "HEALTHTECH",
+      founders: ["9"],
+      investors: ["investor-5"],
+      fundingRounds: []
+    },
+    {
+      id: "startup-12",
+      name: "CyberShield",
+      description: "Advanced threat detection for small businesses",
+      industry: "CYBERSECURITY",
+      founders: ["5"],
+      investors: ["investor-6"],
+      fundingRounds: []
     }
   ],
 
