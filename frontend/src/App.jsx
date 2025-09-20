@@ -1,17 +1,17 @@
 import { useState } from 'react'
+import { isUsingRealBackend } from './apolloClient'
 import { mockData } from './mockData'
 
 function App() {
   const [selectedIndustry, setSelectedIndustry] = useState('ALL')
 
-  // For now, just use mock data to get the frontend working
+  // Keep it simple - just use mock data for now
   const startups = selectedIndustry === 'ALL' 
     ? mockData.startups 
     : mockData.startups.filter(startup => startup.industry === selectedIndustry);
   
   const loading_state = false;
   const error_state = null;
-  const isUsingRealBackend = false;
 
   // Loading state
   if (loading_state) {

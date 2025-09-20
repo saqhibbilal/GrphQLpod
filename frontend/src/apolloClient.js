@@ -6,7 +6,7 @@ import { typeDefs } from './schema';
 import { mockResolvers } from './mockResolvers';
 
 // Configuration flag - set to true to use real backend
-const USE_REAL_BACKEND = false;
+const USE_REAL_BACKEND = true;
 
 // Mock Apollo Client
 const createMockClient = () => {
