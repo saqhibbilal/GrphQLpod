@@ -97,7 +97,7 @@ function App() {
                     </p>
                   </div>
                   
-                  <div>
+      <div>
                     <h4 style={{ fontWeight: '500', color: '#374151', marginBottom: '0.25rem' }}>Investors:</h4>
                     <p style={{ fontSize: '0.875rem', color: '#6b7280' }}>
                       {investors.map(i => `${i.name} (${i.type})`).join(', ')}
@@ -107,7 +107,7 @@ function App() {
               </div>
             )
           })}
-        </div>
+      </div>
 
         <div style={{ marginTop: '2rem', textAlign: 'center' }}>
           <p style={{ color: '#6b7280' }}>
