@@ -1,81 +1,67 @@
-// Import mock data (we'll replace this with database queries later)
-const mockData = {
-  founders: [
-    {
-      id: "1",
-      name: "Sarah Chen",
-      bio: "Former Google engineer, passionate about FinTech innovation.",
-      startups: ["startup-1", "startup-2"]
-    },
-    {
-      id: "2", 
-      name: "Marcus Rodriguez",
-      bio: "Healthcare industry veteran with 15 years experience.",
-      startups: ["startup-3"]
-    }
-  ],
-  startups: [
-    {
-      id: "startup-1",
-      name: "PayFlow",
-      description: "Revolutionary payment processing platform",
-      industry: "FINTECH",
-      founders: ["1"],
-      investors: ["investor-1"]
-    },
-    {
-      id: "startup-2", 
-      name: "CryptoGuard",
-      description: "Enterprise-grade cryptocurrency security",
-      industry: "FINTECH",
-      founders: ["1"],
-      investors: ["investor-2"]
-    }
-  ],
-  investors: [
-    {
-      id: "investor-1",
-      name: "Sequoia Capital",
-      type: "VC",
-      startups: ["startup-1"]
-    },
-    {
-      id: "investor-2", 
-      name: "Andreessen Horowitz",
-      type: "VC",
-      startups: ["startup-2"]
-    }
-  ]
-};
+const { founderQueries, startupQueries, investorQueries, fundingRoundQueries } = require('../database/queries');
 
 const resolvers = {
   Query: {
-    founders: () => mockData.founders,
-    founder: (_, { id }) => mockData.founders.find(f => f.id === id),
-    startups: () => mockData.startups,
-    startup: (_, { id }) => mockData.startups.find(s => s.id === id),
-    startupsByIndustry: (_, { industry }) => 
-      mockData.startups.filter(s => s.industry === industry),
-    investors: () => mockData.investors,
-    investor: (_, { id }) => mockData.investors.find(i => i.id === id)
+    founders: async () => {
+      return await founderQueries.getAll();
+    },
+    
+    founder: async (_, { id }) => {
+      return await founderQueries.getById(id);
+    },
+    
+    startups: async () => {
+      return await startupQueries.getAll();
+    },
+    
+    startup: async (_, { id }) => {
+      return await startupQueries.getById(id);
+    },
+    
+    startupsByIndustry: async (_, { industry }) => {
+      return await startupQueries.getByIndustry(industry);
+    },
+    
+    investors: async () => {
+      return await investorQueries.getAll();
+    },
+    
+    investor: async (_, { id }) => {
+      return await investorQueries.getById(id);
+    }
   },
 
   // Resolvers for nested fields
   Founder: {
-    startups: (founder) => 
-      founder.startups.map(id => mockData.startups.find(s => s.id === id))
+    startups: async (founder) => {
+      return await startupQueries.getByFounderId(founder.id);
+    }
   },
 
   Startup: {
-    founders: (startup) => 
-      startup.founders.map(id => mockData.founders.find(f => f.id === id)),
-    investors: (startup) => 
-      startup.investors.map(id => mockData.investors.find(i => i.id === id))
+    founders: async (startup) => {
+      return await founderQueries.getByStartupId(startup.id);
+    },
+    
+    investors: async (startup) => {
+      return await investorQueries.getByStartupId(startup.id);
+    },
+    
+    fundingRounds: async (startup) => {
+      return await fundingRoundQueries.getByStartupId(startup.id);
+    }
   },
 
   Investor: {
-    startups: (investor) => 
-      investor.startups.map(id => mockData.startups.find(s => s.id === id))
+    startups: async (investor) => {
+      return await startupQueries.getByInvestorId(investor.id);
+    }
+  },
+
+  FundingRound: {
+    startup: async (fundingRound) => {
+      return await startupQueries.getById(fundingRound.startup_id);
+    }
   }
 };
 

@@ -2,6 +2,9 @@ FROM node:18-alpine
 
 WORKDIR /app
 
+# Install runtime dependencies
+RUN apk add --no-cache postgresql-client postgresql-dev python3 make g++
+
 # Copy package files
 COPY package*.json ./
 

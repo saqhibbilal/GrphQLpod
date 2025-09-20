@@ -24,11 +24,11 @@ Build a mini knowledge graph for the startup ecosystem using GraphQL to demonstr
 
 ### Backend
 - Node.js + Apollo Server (GraphQL)
-- SQLite database (Docker containerized)
+- PostgreSQL database (Docker containerized)
 - GraphQL Code Generator for type safety
 
 ### Docker
-- SQLite database in Docker container
+- PostgreSQL database in Docker container
 - Development environment with hot reload
 - Production-ready setup
 
@@ -120,12 +120,12 @@ enum InvestorType {
 
 **Steps:**
 1. Setup Docker Environment
-   - docker-compose.yml for SQLite
+   - docker-compose.yml for PostgreSQL
    - Database volume for persistence
 2. Create Apollo Server
    - GraphQL schema definition
    - Basic resolvers
-3. Setup SQLite Database
+3. Setup PostgreSQL Database
    - Tables for founders, startups, investors
    - Seed data for testing
 
@@ -188,10 +188,15 @@ query FounderNetwork($founderId: ID!) {
 version: '3.8'
 services:
   database:
-    image: alpine:latest
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: tawasul
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
     volumes:
-      - ./data:/data
-    command: sh -c "apk add --no-cache sqlite && sqlite3 /data/startups.db"
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
   
   backend:
     build: ./backend
@@ -201,6 +206,8 @@ services:
       - ./backend:/app
     depends_on:
       - database
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@database:5432/tawasul
   
   frontend:
     build: ./frontend
@@ -208,6 +215,9 @@ services:
       - "3000:3000"
     volumes:
       - ./frontend:/app
+
+volumes:
+  postgres_data:
 ```
 
 ## Mock Data Structure (for Phase 1)
