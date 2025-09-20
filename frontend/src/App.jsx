@@ -1,13 +1,61 @@
-import { useState } from 'react'
-import { isUsingRealBackend } from './apolloClient'
-import { mockData } from './mockData'
+import { useState, useEffect } from 'react'
+import { client, isUsingRealBackend } from './apolloClient'
+import { GET_STARTUPS } from './queries'
 
 function App() {
   const [selectedIndustry, setSelectedIndustry] = useState('ALL')
   const [searchTerm, setSearchTerm] = useState('')
+  const [startupData, setStartupData] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
 
+  // Fetch data using Apollo Client directly
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true)
+        console.log('Fetching GraphQL data...')
+        
+        // Use simple fetch instead of Apollo Client
+        const response = await fetch('http://localhost:4000/graphql', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            query: `{ startups { id name description industry founders { id name bio } investors { id name type } } }`
+          })
+        })
+        
+        const result = await response.json()
+        console.log('GraphQL result:', result)
+        console.log('Result data:', result.data)
+        if (result.errors) {
+          console.log('GraphQL errors:', result.errors)
+          result.errors.forEach((error, index) => {
+            console.log(`Error ${index + 1}:`, error.message, error)
+          })
+        }
+        
+        if (result.data && result.data.startups) {
+          setStartupData(result.data.startups)
+          setError(null)
+        } else {
+          setError(new Error('No startups data received from backend'))
+          setStartupData([])
+        }
+      } catch (err) {
+        console.error('GraphQL error:', err)
+        setError(err)
+        setStartupData([])
+      } finally {
+        setLoading(false)
+      }
+    }
+    
+    fetchData()
+  }, [])
+  
   // Filter startups by industry and search term
-  let filteredStartups = mockData.startups;
+  let filteredStartups = startupData;
   
   // Filter by industry
   if (selectedIndustry !== 'ALL') {
@@ -24,8 +72,8 @@ function App() {
   
   const startups = filteredStartups;
   
-  const loading_state = false;
-  const error_state = null;
+  const loading_state = loading;
+  const error_state = error;
 
   // Loading state
   if (loading_state) {
@@ -124,15 +172,9 @@ function App() {
           gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))' 
         }}>
           {startups.map((startup) => {
-            // Get founder names from mock data
-            const founders = (startup.founders || []).map(founderId => 
-              mockData.founders.find(f => f.id === founderId)
-            ).filter(Boolean)
-            
-            // Get investor info from mock data
-            const investors = (startup.investors || []).map(investorId =>
-              mockData.investors.find(i => i.id === investorId)
-            ).filter(Boolean)
+            // GraphQL data already has full founder and investor objects
+            const founders = startup.founders || []
+            const investors = startup.investors || []
 
             return (
               <div key={startup.id} style={{ 

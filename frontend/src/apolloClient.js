@@ -41,7 +41,7 @@ const createMockClient = () => {
 const createRealClient = () => {
   return new ApolloClient({
     link: createHttpLink({
-      uri: 'http://backend:4000/graphql'
+      uri: 'http://localhost:4000/graphql'
     }),
     cache: new InMemoryCache(),
     defaultOptions: {
