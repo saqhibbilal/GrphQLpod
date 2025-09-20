@@ -1,46 +1,58 @@
 import { ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client';
 import { SchemaLink } from '@apollo/client/link/schema';
-import { makeExecutableSchema, addMocksToSchema } from '@graphql-tools/schema';
+import { makeExecutableSchema } from '@graphql-tools/schema';
+import { addMocksToSchema } from '@graphql-tools/mock';
 import { typeDefs } from './schema';
 import { mockResolvers } from './mockResolvers';
 
-// Create executable schema with mock resolvers
-const schema = makeExecutableSchema({
-  typeDefs,
-  resolvers: mockResolvers
-});
+// Configuration flag - set to true to use real backend
+const USE_REAL_BACKEND = false;
 
-// Add mocks to schema for any missing fields
-const schemaWithMocks = addMocksToSchema({
-  schema,
-  mocks: {
-    String: () => 'Mocked string',
-    Int: () => 42,
-    Float: () => 3.14,
-    Boolean: () => true,
-    ID: () => 'mock-id'
-  },
-  preserveResolvers: true // Keep our custom resolvers
-});
+// Mock Apollo Client
+const createMockClient = () => {
+  const schema = makeExecutableSchema({
+    typeDefs,
+    resolvers: mockResolvers
+  });
 
-// Create Apollo Client with mock schema
-export const client = new ApolloClient({
-  link: new SchemaLink({ schema: schemaWithMocks }),
-  cache: new InMemoryCache(),
-  defaultOptions: {
-    watchQuery: {
-      errorPolicy: 'ignore'
+  const schemaWithMocks = addMocksToSchema({
+    schema,
+    mocks: {
+      String: () => 'Mocked string',
+      Int: () => 42,
+      Float: () => 3.14,
+      Boolean: () => true,
+      ID: () => 'mock-id'
     },
-    query: {
-      errorPolicy: 'all'
-    }
-  }
-});
+    preserveResolvers: true
+  });
 
-// For future use when connecting to real backend:
-// export const client = new ApolloClient({
-//   link: createHttpLink({
-//     uri: 'http://localhost:4000/graphql'
-//   }),
-//   cache: new InMemoryCache()
-// });
+  return new ApolloClient({
+    link: new SchemaLink({ schema: schemaWithMocks }),
+    cache: new InMemoryCache(),
+    defaultOptions: {
+      watchQuery: { errorPolicy: 'ignore' },
+      query: { errorPolicy: 'all' }
+    }
+  });
+};
+
+// Real Backend Apollo Client
+const createRealClient = () => {
+  return new ApolloClient({
+    link: createHttpLink({
+      uri: 'http://backend:4000/graphql'
+    }),
+    cache: new InMemoryCache(),
+    defaultOptions: {
+      watchQuery: { errorPolicy: 'all' },
+      query: { errorPolicy: 'all' }
+    }
+  });
+};
+
+// Export the appropriate client based on configuration
+export const client = USE_REAL_BACKEND ? createRealClient() : createMockClient();
+
+// Export configuration for debugging
+export const isUsingRealBackend = USE_REAL_BACKEND;

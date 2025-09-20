@@ -4,10 +4,39 @@ import { mockData } from './mockData'
 function App() {
   const [selectedIndustry, setSelectedIndustry] = useState('ALL')
 
-  // Filter startups by industry
-  const filteredStartups = selectedIndustry === 'ALL' 
+  // For now, just use mock data to get the frontend working
+  const startups = selectedIndustry === 'ALL' 
     ? mockData.startups 
-    : mockData.startups.filter(startup => startup.industry === selectedIndustry)
+    : mockData.startups.filter(startup => startup.industry === selectedIndustry);
+  
+  const loading_state = false;
+  const error_state = null;
+  const isUsingRealBackend = false;
+
+  // Loading state
+  if (loading_state) {
+    return (
+      <div style={{ minHeight: '100vh', backgroundColor: '#f9fafb', padding: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ textAlign: 'center' }}>
+          <div style={{ fontSize: '2rem', marginBottom: '1rem' }}>🔄</div>
+          <p style={{ color: '#6b7280', fontSize: '1.1rem' }}>Loading startup data...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Error state
+  if (error_state) {
+    return (
+      <div style={{ minHeight: '100vh', backgroundColor: '#f9fafb', padding: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ textAlign: 'center' }}>
+          <div style={{ fontSize: '2rem', marginBottom: '1rem' }}>❌</div>
+          <p style={{ color: '#ef4444', fontSize: '1.1rem' }}>Error loading data: {error_state.message}</p>
+          <p style={{ color: '#6b7280', fontSize: '0.9rem', marginTop: '0.5rem' }}>Check if the backend is running</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div style={{ minHeight: '100vh', backgroundColor: '#f9fafb', padding: '20px' }}>
@@ -19,6 +48,9 @@ function App() {
         <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
           <p style={{ color: '#6b7280', fontSize: '1.1rem' }}>
             Exploring connections between founders, startups, and investors
+          </p>
+          <p style={{ color: isUsingRealBackend ? '#10b981' : '#f59e0b', fontSize: '0.9rem', marginTop: '0.5rem' }}>
+            {isUsingRealBackend ? '✅ Using Real GraphQL Backend' : '🔧 Using Mock Data'}
           </p>
         </div>
 
@@ -50,14 +82,14 @@ function App() {
           gap: '1.5rem', 
           gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))' 
         }}>
-          {filteredStartups.map((startup) => {
-            // Get founder names
-            const founders = startup.founders.map(founderId => 
+          {startups.map((startup) => {
+            // Get founder names from mock data
+            const founders = (startup.founders || []).map(founderId => 
               mockData.founders.find(f => f.id === founderId)
             ).filter(Boolean)
             
-            // Get investor info
-            const investors = startup.investors.map(investorId =>
+            // Get investor info from mock data
+            const investors = (startup.investors || []).map(investorId =>
               mockData.investors.find(i => i.id === investorId)
             ).filter(Boolean)
 
@@ -111,7 +143,7 @@ function App() {
 
         <div style={{ marginTop: '2rem', textAlign: 'center' }}>
           <p style={{ color: '#6b7280' }}>
-            ✅ Showing {filteredStartups.length} startups • Ready for GraphQL integration
+            ✅ Showing {startups.length} startups • {isUsingRealBackend ? 'GraphQL Backend Connected' : 'Mock Data Mode'}
           </p>
         </div>
       </div>
