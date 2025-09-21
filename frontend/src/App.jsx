@@ -9,6 +9,45 @@ function App() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
+  // Industry color mapping with dark, rich colors
+  const industryColors = {
+    'FINTECH': {
+      primary: '#1a472a', // Dark forest green (Slytherin-inspired)
+      secondary: '#22c55e',
+      background: 'rgba(26, 71, 42, 0.05)'
+    },
+    'HEALTHTECH': {
+      primary: '#7c2d12', // Dark red-brown (Gryffindor-inspired)
+      secondary: '#dc2626',
+      background: 'rgba(124, 45, 18, 0.05)'
+    },
+    'EDTECH': {
+      primary: '#1e3a8a', // Deep blue (Ravenclaw-inspired)
+      secondary: '#3b82f6',
+      background: 'rgba(30, 58, 138, 0.05)'
+    },
+    'AI_ML': {
+      primary: '#581c87', // Deep purple (magical theme)
+      secondary: '#8b5cf6',
+      background: 'rgba(88, 28, 135, 0.05)'
+    },
+    'CYBERSECURITY': {
+      primary: '#374151', // Dark slate gray (security theme)
+      secondary: '#6b7280',
+      background: 'rgba(55, 65, 81, 0.05)'
+    },
+    'CLEANTECH': {
+      primary: '#064e3b', // Dark emerald (nature theme)
+      secondary: '#059669',
+      background: 'rgba(6, 78, 59, 0.05)'
+    },
+    'ECOMMERCE': {
+      primary: '#92400e', // Dark amber (commerce theme)
+      secondary: '#f59e0b',
+      background: 'rgba(146, 64, 14, 0.05)'
+    }
+  }
+
   // Fetch data using Apollo Client directly
   useEffect(() => {
     const fetchData = async () => {
@@ -78,10 +117,35 @@ function App() {
   // Loading state
   if (loading_state) {
     return (
-      <div style={{ minHeight: '100vh', backgroundColor: '#f9fafb', padding: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <div style={{ textAlign: 'center' }}>
-          <div style={{ fontSize: '2rem', marginBottom: '1rem' }}>🔄</div>
-          <p style={{ color: '#6b7280', fontSize: '1.1rem' }}>Loading startup data...</p>
+      <div style={{ 
+        minHeight: '100vh', 
+        backgroundColor: 'transparent', 
+        padding: '40px 20px', 
+        display: 'flex', 
+        alignItems: 'center', 
+        justifyContent: 'center' 
+      }}>
+        <div style={{ 
+          textAlign: 'center',
+          backgroundColor: 'rgba(255, 255, 255, 0.95)',
+          padding: '3rem',
+          borderRadius: '20px',
+          boxShadow: '0 10px 30px rgba(0, 0, 0, 0.1)',
+          border: '1px solid rgba(0, 0, 0, 0.05)'
+        }}>
+          <div style={{ 
+            fontSize: '3rem', 
+            marginBottom: '1.5rem',
+            animation: 'spin 2s linear infinite'
+          }}>🔄</div>
+          <p style={{ 
+            color: '#6b7280', 
+            fontSize: '1.3rem',
+            fontFamily: 'Google Sans, sans-serif',
+            fontWeight: '500'
+          }}>
+            Loading startup data...
+          </p>
         </div>
       </div>
     );
@@ -90,133 +154,323 @@ function App() {
   // Error state
   if (error_state) {
     return (
-      <div style={{ minHeight: '100vh', backgroundColor: '#f9fafb', padding: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <div style={{ textAlign: 'center' }}>
-          <div style={{ fontSize: '2rem', marginBottom: '1rem' }}>❌</div>
-          <p style={{ color: '#ef4444', fontSize: '1.1rem' }}>Error loading data: {error_state.message}</p>
-          <p style={{ color: '#6b7280', fontSize: '0.9rem', marginTop: '0.5rem' }}>Check if the backend is running</p>
+      <div style={{ 
+        minHeight: '100vh', 
+        backgroundColor: 'transparent', 
+        padding: '40px 20px', 
+        display: 'flex', 
+        alignItems: 'center', 
+        justifyContent: 'center' 
+      }}>
+        <div style={{ 
+          textAlign: 'center',
+          backgroundColor: 'rgba(255, 255, 255, 0.95)',
+          padding: '3rem',
+          borderRadius: '20px',
+          boxShadow: '0 10px 30px rgba(0, 0, 0, 0.1)',
+          border: '1px solid rgba(0, 0, 0, 0.05)'
+        }}>
+          <div style={{ fontSize: '3rem', marginBottom: '1.5rem' }}>❌</div>
+          <p style={{ 
+            color: '#ef4444', 
+            fontSize: '1.3rem',
+            fontFamily: 'Google Sans, sans-serif',
+            fontWeight: '600',
+            marginBottom: '0.5rem'
+          }}>
+            Error loading data
+          </p>
+          <p style={{ 
+            color: '#6b7280', 
+            fontSize: '1.1rem',
+            fontFamily: 'Roboto, sans-serif',
+            fontWeight: '400'
+          }}>
+            {error_state.message}
+          </p>
+          <p style={{ 
+            color: '#9ca3af', 
+            fontSize: '1rem', 
+            marginTop: '1rem',
+            fontFamily: 'Roboto, sans-serif',
+            fontWeight: '400'
+          }}>
+            Check if the backend is running
+          </p>
         </div>
       </div>
     );
   }
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: '#f9fafb', padding: '20px' }}>
-      <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-        <h1 style={{ fontSize: '2.5rem', fontWeight: 'bold', textAlign: 'center', marginBottom: '2rem', color: '#1f2937' }}>
-          🚀 Startup Ecosystem Knowledge Graph
+    <div style={{ minHeight: '100vh', backgroundColor: 'transparent', padding: '40px 20px' }}>
+      <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
+        <h1 style={{ 
+          fontSize: '3.5rem', 
+          fontWeight: '700', 
+          textAlign: 'center', 
+          marginBottom: '1rem', 
+          color: '#1f2937',
+          fontFamily: 'Google Sans, sans-serif',
+          letterSpacing: '-0.025em'
+        }}>
+          🚀 Startup Ecosystem
         </h1>
+        <p style={{
+          fontSize: '1.5rem',
+          textAlign: 'center',
+          color: '#6b7280',
+          marginBottom: '3rem',
+          fontWeight: '400',
+          fontFamily: 'Google Sans, sans-serif'
+        }}>
+          Knowledge Graph
+        </p>
         
-        <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-          <p style={{ color: '#6b7280', fontSize: '1.1rem' }}>
+        <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
+          <p style={{ 
+            color: '#6b7280', 
+            fontSize: '1.2rem', 
+            marginBottom: '1rem',
+            fontFamily: 'Roboto, sans-serif',
+            fontWeight: '400'
+          }}>
             Exploring connections between founders, startups, and investors
           </p>
-          <p style={{ color: isUsingRealBackend ? '#10b981' : '#f59e0b', fontSize: '0.9rem', marginTop: '0.5rem' }}>
+          <p style={{ 
+            color: isUsingRealBackend ? '#10b981' : '#f59e0b', 
+            fontSize: '1rem',
+            fontWeight: '600',
+            fontFamily: 'Google Sans, sans-serif'
+          }}>
             {isUsingRealBackend ? '✅ Using Real GraphQL Backend' : '🔧 Using Mock Data'}
           </p>
         </div>
 
         {/* Search and Filter */}
-        <div style={{ marginBottom: '2rem', textAlign: 'center' }}>
+        <div style={{ 
+          marginBottom: '3rem', 
+          textAlign: 'center',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: '1.5rem'
+        }}>
           {/* Search Input */}
-          <div style={{ marginBottom: '1rem' }}>
+          <div>
             <input
               type="text"
               placeholder="🔍 Search startups..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               style={{
-                padding: '10px 16px',
+                padding: '16px 24px',
                 border: '2px solid #e5e7eb',
-                borderRadius: '8px',
-                fontSize: '16px',
-                width: '300px',
-                maxWidth: '100%',
+                borderRadius: '15px',
+                fontSize: '17px',
+                width: '400px',
+                maxWidth: '90vw',
                 outline: 'none',
-                transition: 'border-color 0.2s',
+                transition: 'all 0.2s ease',
+                fontFamily: 'Roboto, sans-serif',
+                backgroundColor: 'white',
+                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+                fontWeight: '400'
               }}
-              onFocus={(e) => e.target.style.borderColor = '#3b82f6'}
-              onBlur={(e) => e.target.style.borderColor = '#e5e7eb'}
+              onFocus={(e) => {
+                e.target.style.borderColor = '#3b82f6'
+                e.target.style.boxShadow = '0 4px 12px rgba(59, 130, 246, 0.15)'
+              }}
+              onBlur={(e) => {
+                e.target.style.borderColor = '#e5e7eb'
+                e.target.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.05)'
+              }}
             />
           </div>
           
           {/* Industry Filter */}
-          <div>
-            <label style={{ color: '#374151', fontWeight: '500', marginRight: '1rem' }}>Filter by Industry:</label>
-          <select 
-            value={selectedIndustry}
-            onChange={(e) => setSelectedIndustry(e.target.value)}
-            style={{ 
-              padding: '8px 16px', 
-              border: '1px solid #d1d5db', 
-              borderRadius: '6px',
-              fontSize: '16px',
-              outline: 'none'
-            }}
-          >
-            <option value="ALL">All Industries</option>
-            <option value="FINTECH">FinTech</option>
-            <option value="HEALTHTECH">HealthTech</option>
-            <option value="EDTECH">EdTech</option>
-            <option value="AI_ML">AI/ML</option>
-            <option value="CYBERSECURITY">Cybersecurity</option>
-            <option value="CLEANTECH">CleanTech</option>
-            <option value="ECOMMERCE">E-commerce</option>
-          </select>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap', justifyContent: 'center' }}>
+            <label style={{ 
+              color: '#374151', 
+              fontWeight: '600', 
+              fontSize: '17px',
+              fontFamily: 'Google Sans, sans-serif'
+            }}>
+              Filter by Industry:
+            </label>
+            <select 
+              value={selectedIndustry}
+              onChange={(e) => setSelectedIndustry(e.target.value)}
+              style={{ 
+                padding: '14px 18px', 
+                border: '2px solid #e5e7eb', 
+                borderRadius: '15px',
+                fontSize: '17px',
+                outline: 'none',
+                fontFamily: 'Roboto, sans-serif',
+                backgroundColor: 'white',
+                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+                transition: 'all 0.2s ease',
+                fontWeight: '400'
+              }}
+            >
+              <option value="ALL">All Industries</option>
+              <option value="FINTECH">FinTech</option>
+              <option value="HEALTHTECH">HealthTech</option>
+              <option value="EDTECH">EdTech</option>
+              <option value="AI_ML">AI/ML</option>
+              <option value="CYBERSECURITY">Cybersecurity</option>
+              <option value="CLEANTECH">CleanTech</option>
+              <option value="ECOMMERCE">E-commerce</option>
+            </select>
           </div>
         </div>
 
         <div style={{ 
           display: 'grid', 
-          gap: '1.5rem', 
-          gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))' 
+          gap: '2rem', 
+          gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
+          padding: '0 1rem'
         }}>
           {startups.map((startup) => {
             // GraphQL data already has full founder and investor objects
             const founders = startup.founders || []
             const investors = startup.investors || []
+            const industryColor = industryColors[startup.industry] || {
+              primary: '#374151',
+              secondary: '#6b7280',
+              background: 'rgba(55, 65, 81, 0.05)'
+            }
 
             return (
-              <div key={startup.id} style={{ 
-                backgroundColor: 'white', 
-                borderRadius: '8px', 
-                boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', 
-                padding: '1.5rem',
-                transition: 'box-shadow 0.2s'
-              }}>
-                <h3 style={{ 
-                  fontSize: '1.25rem', 
-                  fontWeight: '600', 
-                  marginBottom: '0.5rem', 
-                  color: '#1f2937' 
-                }}>
-                  {startup.name}
-                </h3>
-                <p style={{ 
-                  fontSize: '0.875rem', 
-                  color: '#2563eb', 
-                  marginBottom: '0.5rem', 
-                  fontWeight: '500' 
-                }}>
-                  {startup.industry}
-                </p>
-                <p style={{ color: '#6b7280', marginBottom: '1rem' }}>
-                  {startup.description}
-                </p>
-                
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                  <div>
-                    <h4 style={{ fontWeight: '500', color: '#374151', marginBottom: '0.25rem' }}>Founders:</h4>
-                    <p style={{ fontSize: '0.875rem', color: '#6b7280' }}>
-                      {founders.map(f => f.name).join(', ')}
-                    </p>
+              <div 
+                key={startup.id} 
+                style={{ 
+                  background: `linear-gradient(135deg, ${industryColor.primary} 0%, ${industryColor.secondary} 100%)`,
+                  borderRadius: '20px', 
+                  boxShadow: '0 10px 30px rgba(0, 0, 0, 0.15)', 
+                  padding: '0',
+                  transition: 'all 0.3s ease',
+                  border: 'none',
+                  overflow: 'hidden',
+                  position: 'relative'
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.transform = 'translateY(-8px) scale(1.02)'
+                  e.target.style.boxShadow = '0 20px 40px rgba(0, 0, 0, 0.25)'
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.transform = 'translateY(0) scale(1)'
+                  e.target.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.15)'
+                }}
+              >
+                {/* Card Content */}
+                <div style={{ padding: '2.5rem' }}>
+                  {/* Header */}
+                  <div style={{ marginBottom: '2rem' }}>
+                    <h3 style={{ 
+                      fontSize: '2rem', 
+                      fontWeight: '700', 
+                      marginBottom: '1rem', 
+                      color: 'white',
+                      fontFamily: 'Google Sans, sans-serif',
+                      lineHeight: '1.2',
+                      textShadow: '0 2px 4px rgba(0, 0, 0, 0.3)'
+                    }}>
+                      {startup.name}
+                    </h3>
+                    <div style={{
+                      display: 'inline-block',
+                      backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                      color: 'white',
+                      padding: '8px 16px',
+                      borderRadius: '25px',
+                      fontSize: '0.9rem',
+                      fontWeight: '600',
+                      border: '1px solid rgba(255, 255, 255, 0.3)',
+                      backdropFilter: 'blur(10px)',
+                      fontFamily: 'Google Sans, sans-serif'
+                    }}>
+                      {startup.industry.replace('_', '/')}
+                    </div>
                   </div>
+
+                  {/* Description */}
+                  <p style={{ 
+                    color: 'rgba(255, 255, 255, 0.9)', 
+                    marginBottom: '2.5rem',
+                    lineHeight: '1.7',
+                    fontSize: '1.1rem',
+                    fontFamily: 'Roboto, sans-serif',
+                    fontWeight: '400'
+                  }}>
+                    {startup.description}
+                  </p>
                   
-      <div>
-                    <h4 style={{ fontWeight: '500', color: '#374151', marginBottom: '0.25rem' }}>Investors:</h4>
-                    <p style={{ fontSize: '0.875rem', color: '#6b7280' }}>
-                      {investors.map(i => `${i.name} (${i.type})`).join(', ')}
-                    </p>
+                  {/* Details Section */}
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                    {/* Founders */}
+                    <div style={{
+                      padding: '1.25rem',
+                      backgroundColor: 'rgba(255, 255, 255, 0.15)',
+                      borderRadius: '15px',
+                      border: '1px solid rgba(255, 255, 255, 0.2)',
+                      backdropFilter: 'blur(10px)'
+                    }}>
+                      <h4 style={{ 
+                        fontWeight: '600', 
+                        color: 'white', 
+                        marginBottom: '0.75rem',
+                        fontSize: '1rem',
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.1em',
+                        fontFamily: 'Google Sans, sans-serif'
+                      }}>
+                        👥 Founders
+                      </h4>
+                      <p style={{ 
+                        fontSize: '1rem', 
+                        color: 'rgba(255, 255, 255, 0.9)',
+                        fontWeight: '400',
+                        lineHeight: '1.6',
+                        fontFamily: 'Roboto, sans-serif'
+                      }}>
+                        {founders.length > 0 ? founders.map(f => f.name).join(', ') : 'Not specified'}
+                      </p>
+                    </div>
+                    
+                    {/* Investors */}
+                    <div style={{
+                      padding: '1.25rem',
+                      backgroundColor: 'rgba(255, 255, 255, 0.15)',
+                      borderRadius: '15px',
+                      border: '1px solid rgba(255, 255, 255, 0.2)',
+                      backdropFilter: 'blur(10px)'
+                    }}>
+                      <h4 style={{ 
+                        fontWeight: '600', 
+                        color: 'white', 
+                        marginBottom: '0.75rem',
+                        fontSize: '1rem',
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.1em',
+                        fontFamily: 'Google Sans, sans-serif'
+                      }}>
+                        💰 Investors
+                      </h4>
+                      <p style={{ 
+                        fontSize: '1rem', 
+                        color: 'rgba(255, 255, 255, 0.9)',
+                        fontWeight: '400',
+                        lineHeight: '1.6',
+                        fontFamily: 'Roboto, sans-serif'
+                      }}>
+                        {investors.length > 0 
+                          ? investors.map(i => `${i.name} (${i.type})`).join(', ')
+                          : 'Not specified'
+                        }
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -224,8 +478,21 @@ function App() {
           })}
       </div>
 
-        <div style={{ marginTop: '2rem', textAlign: 'center' }}>
-          <p style={{ color: '#6b7280' }}>
+        <div style={{ 
+          marginTop: '4rem', 
+          textAlign: 'center',
+          padding: '2rem',
+          backgroundColor: 'rgba(255, 255, 255, 0.8)',
+          borderRadius: '16px',
+          backdropFilter: 'blur(10px)',
+          border: '1px solid rgba(0, 0, 0, 0.05)'
+        }}>
+          <p style={{ 
+            color: '#6b7280',
+            fontSize: '1.1rem',
+            fontWeight: '500',
+            fontFamily: 'Google Sans, sans-serif'
+          }}>
             ✅ Showing {startups.length} startups • {isUsingRealBackend ? 'GraphQL Backend Connected' : 'Mock Data Mode'}
           </p>
         </div>
