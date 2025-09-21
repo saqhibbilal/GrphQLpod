@@ -50,8 +50,6 @@ services:
     networks:
       - tawasul-network
     command: npm run dev
-    profiles:
-      - full-stack
 
 networks:
   tawasul-network:

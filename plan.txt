@@ -277,3 +277,37 @@ const mockData = {
 - Learn Docker basics for development
 - Build modern React applications
 - Understand database relationships and queries
+
+
+==============================================
+docker-compose up -d
+docker-compose down
+# Check backend logs
+docker-compose logs backend
+
+# Check frontend logs  
+docker-compose logs frontend
+
+# Check database logs
+docker-compose logs database
+
+# Follow logs in real-time
+docker-compose logs -f backend
+
+# Stop all services
+docker-compose down
+
+# Stop and remove volumes (full reset)
+docker-compose down -v
+
+# Rebuild backend
+docker-compose build backend
+
+# Rebuild frontend
+docker-compose build frontend
+
+# Rebuild all
+docker-compose build
+
+# Check if all containers are running
+docker-compose ps
